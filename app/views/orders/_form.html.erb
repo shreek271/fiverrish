@@ -1,0 +1,38 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= form_for ([@service, @service.orders.new]) do |f| %>
+      <%= f.hidden_field :service_id, value: @service.id %>
+      <%= f.hidden_field :price, value: @service.price %>
+      <hr>
+      <h5 class="pull-left">
+        Basic Gig Quantity
+      </h5>
+      <div class="form-group pull-right">
+        <div class="select-control-order-form">
+          <%= f.select(:quantity, options_for_select( [
+            ["1 (Rs. #{@service.price*1})", 1],
+            ["2 (Rs. #{@service.price*2})", 2],
+            ["3 (Rs. #{@service.price*3})", 3],
+            ["4 (Rs. #{@service.price*4})", 1],
+            ["5 (Rs. #{@service.price*5})", 1] ], {id: "quantity"} ) ) %>
+        </div>
+      </div>
+      <br>
+      <div class="form-group pull-left">
+        <script
+          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key='pk_test_gSycwQHdaT84QXl9iiiFRsph'
+          data-name="#{current_user.name}"
+        </script>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+     $("select").bind("change",function() {
+       $('.btn-order').html('Order Now - ' + $("select option:selected").html());
+     });
+ })
+</script>
